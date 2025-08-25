@@ -1,145 +1,85 @@
-# Email ETL and 5-Layer Archival System
+# Keyword Frequency Utilities
 
-A comprehensive email extraction, transformation, and archival pipeline designed for organizations with browser-only email access.
+Purpose
+-------
 
-## 🚀 Quick Start
+This repository contains a small, local-first utility to extract and aggregate
+comma-separated keywords from text files and produce a keyword frequency report.
 
-### Production Usage (Email Processing)
+Key features
+------------
+- Scans the repository directory for `*.txt` files containing comma-separated
+	keywords, normalizes tokens (strip + lower), and counts frequencies across all
+	files.
+- Writes `keyword_frequency.csv` and saves a bar chart `top_keywords_bar_chart.png`.
+- Uses a headless matplotlib backend so it can run on machines without a display.
+- Project enforces a local-only CI policy (see `POLICY.md`) and provides a
+	local CI runner and pre-push hook template under `scripts/` so checks run on
+	developer machines only.
+# Keyword Frequency Utilities
+
+Purpose
+-------
+
+This repository provides a small, local-first utility for extracting and
+aggregating comma-separated keywords from text files and producing a simple
+keyword frequency report.
+
+What's included
+---------------
+- `run.py` — the main script: scans `*.txt` files, normalizes tokens,
+	aggregates frequencies, writes `keyword_frequency.csv`, and saves a
+	`top_keywords_bar_chart.png` visualization.
+- `scripts/` — local CI runner, hook installer, and helpers for offline-first
+	workflows.
+- `tests/` — minimal pytest coverage for the keyword utility.
+- `POLICY.md` and `LLM_RUNBOOK.md` — guidance for contributors and
+	automation-friendly safe commit/push steps.
+
+Quick start
+-----------
+
+1. Install UV (recommended) and sync dev dependencies:
+
 ```bash
-# One-command setup and execution
-./run
-
-# System automatically:
-# - Installs UV package manager if needed
-# - Sets up virtual environment with all dependencies
-# - Detects Chrome browser and connects to Outlook PWA
-# - Presents email conversion menu for immediate use
-```
-
-### Development Setup (Code Development)
-```bash
-# Install modern Python tooling (one-time setup)
 curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Setup development environment
-uv sync --dev                      # Install dev dependencies (ruff, mypy, pytest)
-uv run playwright install chromium # Install browser for automation
-
-### Keyword analysis (uv)
-
-If you want to run the included keyword frequency utility (`run.py`) using the project's UV-managed environment:
-
-```bash
-# Ensure uv is installed (one time)
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Install project dependencies into the UV-managed environment
 uv sync --dev
-
-# Run the keyword analysis (from repository root)
-uv run python run.py --input-dir ./data --output-csv keyword_frequency.csv --top 20
-```
-# Development workflow
-uv run pytest tests/              # Run test suite
-uv run ruff check --fix src/      # Auto-fix linting issues
-uv run ruff format src/           # Format code
-uv run mypy src/                  # Type checking
 ```
 
-## 🎯 System Overview
-
-The **Email ETL and 5-Layer Archival System** provides zero-configuration email processing:
-
-1. **🚀 Run `./run`** - Automated environment setup
-2. **🔍 Chrome Detection** - Connects to existing Outlook PWA or launches Chrome
-3. **📧 Email Conversion** - Download and process emails in multiple formats
-4. **🗂️ 5-Layer Archive** - Creates redundant archives for data preservation
-
-## 📁 Repository Structure
-
-```
-email-etl-archival/
-├── AGENTS.md              # Agent development guide
-├── CLAUDE.md              # Claude-specific instructions
-├── GEMINI.md              # Gemini-specific instructions
-├── src/                   # Source code
-│   ├── core/              # Main pipeline components
-│   ├── discovery/         # Folder structure discovery
-│   ├── processing/        # Email content processing
-│   ├── archival/          # 5-layer archival system
-│   ├── integration/       # Email client integrations
-│   └── utils/             # Shared utilities
-├── docs/                  # Documentation
-├── config/                # Configuration files
-├── scripts/               # Setup and utility scripts
-├── tests/                 # Test suites
-├── data/                  # Data storage
-│   ├── downloads/         # Downloaded emails
-│   ├── processed/         # Processed outputs
-│   └── archive/           # Final archives
-└── logs/                  # Application logs
-```
-
-## 🎯 Current Objectives
-
-See [docs/FOLDER_DISCOVERY_OBJECTIVES.md](docs/FOLDER_DISCOVERY_OBJECTIVES.md) for today's priority tasks.
-
-## 📖 Documentation
-
-**PRIMARY SOURCE**: **[AGENTS.md](AGENTS.md)** - The definitive specification source for all development activities
-
-Additional Documentation:
-- **[Complete Documentation](docs/README.md)** - Comprehensive system guide
-- **[Authentication Setup](docs/AUTHENTICATION.md)** - MFA and login configuration
-- **[Outlook PWA Research](docs/Outlook-PWA-Email-Extraction.md)** - Implementation improvements based on research
-
-## 🔄 5-Layer Archival System
-
-1. **Organized Folders** - Business-categorized structure
-2. **Evolution Integration** - Linux email client
-3. **Thunderbird Integration** - Cross-platform client  
-4. **PST Export** - Windows office PC compatibility
-5. **Multi-Format Archives** - JSON, HTML, MD, Parquet, CSV
-
-## ⚡ Key Features
-
-- Browser automation for Outlook PWA
-- Intelligent folder structure discovery
-- Business-specific task extraction
-- Cross-platform email client integration
-- Comprehensive workflow document generation
-
-## Local CI (offline-first)
-
-This repository includes a local CI runner (`scripts/local_ci.sh`) and a
-git pre-push hook template (`scripts/git-hooks/pre-push`) that runs local CI
-before pushing. These are intentionally local-only to avoid network usage
-and external CI costs.
-
-To install the hooks locally (one-time):
+2. Run the keyword utility from the repository root:
 
 ```bash
-# Ensure you have a .venv (run `uv sync --dev` once if you need to install deps)
+uv run python run.py
+```
+
+3. Run tests:
+
+```bash
+uv run pytest -q
+```
+
+Local CI policy
+---------------
+
+This project enforces a local-only CI policy to avoid accidental remote runs
+and cloud costs. See `POLICY.md` for required developer setup and the
+pre-push hook installer under `scripts/`.
+
+Contributing
+------------
+
+Please follow `POLICY.md` and install the provided git hooks with:
+
+```bash
 ./scripts/install-hooks.sh
 ```
 
-The hooks will run `scripts/local_ci.sh` before each push. If you prefer not
-to run hooks automatically, don't install them; you can run the local CI manually:
+If you need to rename the repo, change branch protections, or modify the CI
+strategy, contact the repository owners for approval.
 
-```bash
-./scripts/local_ci.sh
-```
+License
+-------
 
-### Archiving remote workflows
-
-If you have existing GitHub Actions workflows and want to ensure they are not
-present in the repo (to avoid accidental remote runs), use the helper:
-
-```bash
-./scripts/archive-workflows.sh
-git add .github/workflows.disabled
-git commit -m "ci: archive GitHub Actions workflows (local-only CI)"
-git push
-```
-
-This moves any files from `.github/workflows` into `.github/workflows.disabled`.
+This project intentionally contains no dataset or personal data; the
+repository holds only code, tests, and documentation. Add a license file as
+needed.
