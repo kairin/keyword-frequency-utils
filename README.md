@@ -129,3 +129,17 @@ to run hooks automatically, don't install them; you can run the local CI manuall
 ```bash
 ./scripts/local_ci.sh
 ```
+
+### Archiving remote workflows
+
+If you have existing GitHub Actions workflows and want to ensure they are not
+present in the repo (to avoid accidental remote runs), use the helper:
+
+```bash
+./scripts/archive-workflows.sh
+git add .github/workflows.disabled
+git commit -m "ci: archive GitHub Actions workflows (local-only CI)"
+git push
+```
+
+This moves any files from `.github/workflows` into `.github/workflows.disabled`.

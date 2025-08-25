@@ -100,14 +100,28 @@ uv run playwright install chromium  # Install browser for automation testing
 - **Ruff Linter/Formatter**: https://docs.astral.sh/ruff/ - Extremely fast Python linter and formatter
 - **Context7 MCP Server**: MANDATORY for verification of current best practices
 
-## Local CI preference
+## Local-only CI (MANDATORY)
 
-This project prefers local, offline CI to avoid external costs. The repo
-includes a local CI runner at `scripts/local_ci.sh` and a git hook template
-(`scripts/git-hooks/pre-push`). These are optional and must be installed
-manually via `scripts/install-hooks.sh`. No remote CI workflows (GitHub Actions)
-are enabled by default to ensure local-only execution unless explicitly
-configured by repository maintainers.
+This repository requires a local-only CI policy: all code quality checks,
+security scans, and test runs must be executed locally using the provided
+local CI tooling. Remote execution of workflows on GitHub (Actions) is
+prohibited for routine CI to avoid external runs and costs.
+
+Required developer setup:
+- Install UV and project dependencies once: `uv sync --dev`
+- Run local CI manually as part of your workflow: `./scripts/local_ci.sh`
+- Optionally install the pre-push hook to run checks automatically before
+    push: `./scripts/install-hooks.sh`
+
+Required repository hygiene:
+- Archive any existing workflow definitions with `./scripts/archive-workflows.sh`
+    and commit the `.github/workflows.disabled` directory to preserve history.
+- Keep GitHub Actions disabled at the repository level (Settings → Actions →
+    Disable actions). This repository enforces local-only CI by policy.
+
+Rationale: local-only CI ensures no remote execution of repository code, no
+unexpected cloud costs, and full developer control over the environment used
+to run checks.
 
 ## Core Principles
 

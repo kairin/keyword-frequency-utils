@@ -56,14 +56,6 @@ uv run playwright install chromium  # Install browser for automation
 
 ## Key Topics Covered in AGENTS.md
 
-- **System Architecture**: Complete 5-layer redundant archival approach
-- **Browser Automation**: Playwright-based email downloads from Outlook PWA
-- **Multi-Client Integration**: Evolution, Thunderbird, and PST export support
-- **Task Extraction**: Business-specific pattern recognition and workflow generation
-- **Cross-Platform Requirements**: Linux development with Windows office PC compatibility
-- **Authentication Handling**: Browser-based MFA-compatible login processes
-- **Database Schema**: DuckDB tables for emails, tasks, and relationships
-- **Development Workflow**: Testing, validation, and deployment procedures
 
 ## System Components Overview
 
@@ -76,9 +68,6 @@ The codebase includes a simple script (`run.py`) for **keyword extraction and fr
 **Objective:** Enable quick analysis of dataset composition, support metadata generation, and facilitate downstream processing tasks.
 
 **Development Notes:**
-- The script is standalone and does not require additional configuration.
-- Output files (`keyword_frequency.csv`, `top_keywords_bar_chart.png`) are generated in the working directory.
-- Use this utility for initial dataset exploration or to inform further ETL pipeline development.
 
 Running with UV (recommended):
 
@@ -92,10 +81,10 @@ Local CI preference: this repository provides an offline local CI runner
 (`scripts/local_ci.sh`) and git hook template to run checks before push.
 These are optional and must be installed manually via
 `./scripts/install-hooks.sh`. No remote CI is configured by default.
-
-## Quick Start Reference
-
-Before developing, ensure you understand:
+ Local-only CI (required): This repository mandates local-only CI. Use
+ `./scripts/local_ci.sh` for checks and install hooks with
+ `./scripts/install-hooks.sh` if desired. Remote Actions are not used for
+ routine CI — refer to `POLICY.md` for the repository policy and setup steps.
 1. The 5-layer archival architecture
 2. Business-specific task patterns (Kyocera, Staff, Financial, Equipment, BCM)
 3. Multi-platform integration requirements
