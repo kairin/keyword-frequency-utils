@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Template pre-push hook that runs the offline local CI before pushing.
+# This file is a template; run `scripts/install-hooks.sh` to copy it to .git/hooks/
+
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$REPO_ROOT" || {
+  echo "Failed to change directory to repo root: $REPO_ROOT" >&2
+  exit 1
+}
+
+echo "Running local CI before push (offline-first)..."
+if [ ! -x "./scripts/local_ci.sh" ]; then
+  echo "local_ci.sh not executable or missing" >&2
+  exit 1
+fi
+
+# Prefer uv-run if available; fall back to running the script directly
+if command -v uv >/dev/null 2>&1; then
+  uv run bash scripts/local_ci.sh
+else
+  bash scripts/local_ci.sh
+fi
+
+EXIT_CODE=$?
+if [ $EXIT_CODE -ne 0 ]; then
+  echo "Local CI failed (exit $EXIT_CODE); aborting push." >&2
+  exit $EXIT_CODE
+fi
+
+echo "Local CI passed. Proceeding with push."
+exit 0
