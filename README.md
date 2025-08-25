@@ -108,3 +108,24 @@ Additional Documentation:
 - Business-specific task extraction
 - Cross-platform email client integration
 - Comprehensive workflow document generation
+
+## Local CI (offline-first)
+
+This repository includes a local CI runner (`scripts/local_ci.sh`) and a
+git pre-push hook template (`scripts/git-hooks/pre-push`) that runs local CI
+before pushing. These are intentionally local-only to avoid network usage
+and external CI costs.
+
+To install the hooks locally (one-time):
+
+```bash
+# Ensure you have a .venv (run `uv sync --dev` once if you need to install deps)
+./scripts/install-hooks.sh
+```
+
+The hooks will run `scripts/local_ci.sh` before each push. If you prefer not
+to run hooks automatically, don't install them; you can run the local CI manually:
+
+```bash
+./scripts/local_ci.sh
+```

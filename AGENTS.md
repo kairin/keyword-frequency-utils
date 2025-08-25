@@ -100,6 +100,15 @@ uv run playwright install chromium  # Install browser for automation testing
 - **Ruff Linter/Formatter**: https://docs.astral.sh/ruff/ - Extremely fast Python linter and formatter
 - **Context7 MCP Server**: MANDATORY for verification of current best practices
 
+## Local CI preference
+
+This project prefers local, offline CI to avoid external costs. The repo
+includes a local CI runner at `scripts/local_ci.sh` and a git hook template
+(`scripts/git-hooks/pre-push`). These are optional and must be installed
+manually via `scripts/install-hooks.sh`. No remote CI workflows (GitHub Actions)
+are enabled by default to ensure local-only execution unless explicitly
+configured by repository maintainers.
+
 ## Core Principles
 
 ### Your Role and Objective

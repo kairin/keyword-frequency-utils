@@ -88,6 +88,11 @@ uv sync --dev
 uv run python run.py --input-dir ./ --output-csv keyword_frequency.csv
 ```
 
+Local CI preference: this repository provides an offline local CI runner
+(`scripts/local_ci.sh`) and git hook template to run checks before push.
+These are optional and must be installed manually via
+`./scripts/install-hooks.sh`. No remote CI is configured by default.
+
 ## Quick Start Reference
 
 Before developing, ensure you understand:
