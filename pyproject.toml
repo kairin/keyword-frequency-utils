@@ -1,0 +1,16 @@
+[project]
+name = "keyword-utils"
+version = "0.0.0"
+description = "Utility project: keyword frequency analysis"
+readme = "README.md"
+requires-python = ">=3.10"
+
+# Minimal dependency set for the keyword analysis utility
+dependencies = [
+    "pandas>=1.5",
+    "matplotlib>=3.6",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"

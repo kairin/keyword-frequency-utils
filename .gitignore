@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual env
+.venv/
+.env
+
+# Data and outputs (do not commit)
+*.csv
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.txt
+data/
+downloads/
+processed/
+archive/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
